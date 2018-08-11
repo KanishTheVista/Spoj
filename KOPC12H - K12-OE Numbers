@@ -1,0 +1,72 @@
+#include <bits/stdc++.h>
+using namespace std;
+string s;
+int n;
+long int dp[10][2][250][250];
+long int solve(int idx, int tight, int odd,int even){
+	
+	long int ans = 0;
+	long int &res = dp[idx][tight][odd][even];
+
+	if(idx>=n){
+		if(even > odd)
+			return 1;
+			else
+			return 0;
+	}
+	
+		if(res!=-1)
+		return res;
+		
+		if(tight){
+			for(int i=0;i<=s[idx]-'0';i++){
+				
+				if(i == s[idx]-'0'){
+					if(i%2==0){
+					ans+=solve(idx+1,1, odd,even+i);
+					}else{
+					ans+=solve(idx+1,1,odd+i,even);
+					}	
+				}
+				else{
+					if(i%2==0){
+						ans+=solve(idx+1,0, odd,even+i);
+					}else{
+						ans+=solve(idx+1,0,odd+i,even);
+					}
+				}
+			}
+		}else{
+			for(int i=0;i<10;i++){
+				if(i%2==0){
+					ans+=solve(idx+1,0, odd,even+i);
+				}else{
+					ans+=solve(idx+1,0,odd+i,even);
+				}
+			}
+		}
+		
+		return res=ans;
+}
+int main() {
+	// your code goes here
+	int t;
+	cin>>t;
+	while(t--)
+	{
+	memset(dp,-1,sizeof dp);
+
+	int tx;
+	cin>>tx;
+	tx--;
+	s=to_string(tx);
+	n=s.length();
+	long int res = solve(0,1,0,0);
+	cin>>s;
+	n=s.length();
+	memset(dp,-1,sizeof dp);
+
+	cout<<solve(0,1,0,0)-res<<endl;
+	}
+	return 0;
+}
