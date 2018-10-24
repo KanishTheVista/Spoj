@@ -1,0 +1,39 @@
+https://ideone.com/y4O43A
+<b> 3 kinds of ticket</b>
+#include<bits/stdc++.h>
+using namespace std;
+
+int n;
+int a[10050];
+int days[3] = {2, 7, 25};//1,7,30
+int dp[50][100];
+int solve(int i, int day){
+	
+	if(i>=n)
+	return 0;
+	int &ret = dp[i][day];
+	if(ret !=-1)
+	return ret;
+	int ans = 99999999;
+		ans = min(ans, days[0]+solve(i+1,day + 1));
+		ans = min(ans, days[1]+ solve(i+1,day+7));
+		ans = min(ans, days[2]+solve(i+1,day + 30));
+	if(a[i] <= day){
+
+		ans = min(ans, solve(i+1, day));
+	} 
+	
+	return ret = ans;
+	
+}
+
+int main() {
+	// your code goes here
+	memset(dp,-1,sizeof dp);
+	cin>>n;
+	for(int i=0;i<n;i++)
+		cin>>a[i];
+		
+	cout<<solve(0,0)<<endl;
+	return 0;
+}
